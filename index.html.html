@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ফ্ল্যাট ম্যানেজমেন্ট সিস্টেমস</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f6f4;--card:#fff;--ink:#1b2a24;--mute:#66756e;--line:#dbe4df;--brand:#0f6b4f;--brand2:#e8f3ee;--warn:#b3202f;--btn:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--card:#1b2420;--ink:#e6efe9;--mute:#9ab0a5;--line:#2e3b35;--brand:#4cc79b;--brand2:#20312a;--warn:#ff8a95;--btn:#0d1512}}
+:root[data-theme="dark"]{--bg:#121816;--card:#1b2420;--ink:#e6efe9;--mute:#9ab0a5;--line:#2e3b35;--brand:#4cc79b;--brand2:#20312a;--warn:#ff8a95;--btn:#0d1512}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:16px 14px 40px}
+h1{font-size:24px;margin:4px 0 16px;text-align:center;background:var(--brand);color:var(--btn);border-radius:16px;padding:14px 16px;box-shadow:0 4px 12px rgba(0,0,0,.18);outline:2px solid var(--brand);outline-offset:3px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:14px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;padding:10px;border:2px solid var(--brand);background:transparent;color:var(--brand);border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.tab.on{background:var(--brand);color:var(--btn)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+h2{font-size:18px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:14px;color:var(--mute);margin-bottom:3px}
+input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+.full{grid-column:1/-1}
+.btn{padding:11px 18px;border:0;border-radius:10px;background:var(--brand);color:var(--btn);font:inherit;font-weight:600;cursor:pointer}
+.btn.alt{background:var(--brand2);color:var(--brand)}
+.btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.msg{color:var(--brand);font-weight:600;margin-left:10px}
+.warn{background:var(--brand2);border-left:4px solid var(--warn);padding:8px 12px;border-radius:8px;font-size:14px;margin-bottom:12px}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.s{background:var(--brand2);border-radius:12px;padding:12px}
+.s small{color:var(--mute);display:block}
+.s b{font-size:21px;color:var(--brand)}
+.s.t{background:var(--brand)}.s.t small,.s.t b{color:var(--btn)}
+.sc{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:1500px}
+th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line);font-size:15px}
+th{color:var(--mute);font-weight:500}
+td.r,th.r{text-align:right}
+.del{background:none;border:0;color:var(--warn);cursor:pointer;font:inherit}
+.dw{position:relative;display:flex;gap:6px}.dw input[type=text]{flex:1;min-width:0}.cal{border:1px solid var(--line);background:var(--bg);border-radius:9px;padding:0 12px;cursor:pointer;font-size:18px}.pk{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;left:0;bottom:0;padding:0;border:0}
+.cf{background:none;border:0;color:var(--brand);cursor:pointer;font:inherit;font-weight:600}.no{background:none;border:0;color:var(--mute);cursor:pointer;font:inherit}
+.pdfbox table{min-width:0!important;width:100%}.pdfbox th,.pdfbox td{font-size:13px;padding:6px 5px;white-space:normal!important}.pdfbox .s b{font-size:18px}
+.cg{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--mute);font-size:14px;margin:18px 0 0;font-style:italic}
+.seal{width:96px;height:96px;border-radius:50%;border:4px double var(--brand);color:var(--brand);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:14px;line-height:1.15;font-style:normal;transform:rotate(-8deg);position:relative;flex:none;background:var(--card)}
+.seal:before{content:"";position:absolute;left:5px;top:5px;right:5px;bottom:5px;border:1.5px solid var(--brand);border-radius:50%}
+.seal b{font-size:24px;display:block;line-height:1}
+.pdffoot .seal{width:78px;height:78px;font-size:12px}.pdffoot .seal b{font-size:19px}
+.ts{text-align:center;color:var(--mute);font-size:14px;margin-bottom:8px}
+th,th.r{text-align:center!important}
+.sc{border:1px solid var(--line);border-radius:12px}
+table{border-collapse:separate;border-spacing:0}
+th{background:var(--brand);color:var(--btn);font-weight:600;white-space:nowrap}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tbody tr:nth-child(even) td{background:var(--brand2)}
+tfoot td{background:var(--brand2);font-weight:700;border-top:2px solid var(--brand);border-bottom:0}
+td small{display:block;color:var(--mute);font-size:12px;font-weight:400}
+.rh{background:var(--brand2);border-left:5px solid var(--brand);padding:10px 12px;border-radius:8px;margin-bottom:12px}
+.empty{color:var(--mute);padding:14px 4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media print{.tabs,.noprint,.warn{display:none!important}body{background:#fff;color:#000}.card{border:0;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🏢 ফ্ল্যাট ম্যানেজমেন্ট সিস্টেমস</h1>
+<div id="warn"></div>
+<div class="tabs"><button class="tab on" id="t1">✏️ নতুন এন্ট্রি</button><button class="tab" id="t2">📊 রিপোর্ট</button></div>
+
+<section id="p1">
+<div class="card"><h2>ভাড়া জমার এন্ট্রি</h2>
+<div class="grid">
+<div><label for="flat">ফ্ল্যাট নম্বর</label><select id="flat"></select></div>
+<div><label for="dt">টাকা প্রদানের তারিখ</label><div class="dw"><input id="dt" type="text" placeholder="দিন/মাস/বছর  যেমন ০৭/১০/২০২৬" autocomplete="off"><button type="button" class="cal" data-for="dt" aria-label="ক্যালেন্ডার">📅</button><input class="pk" id="dt_p" type="date" tabindex="-1" aria-hidden="true"></div></div>
+<div><label for="ten">ভাড়াটিয়ার নাম</label><input id="ten" type="text" list="tl" placeholder="ভাড়াটিয়ার নাম লিখুন" autocomplete="off"><datalist id="tl"></datalist></div>
+<div><label for="mob">ভাড়াটিয়ার মোবাইল নম্বর</label><input id="mob" type="tel" placeholder="যেমন ০১৭XXXXXXXX" autocomplete="off"></div>
+<div><label for="ctr">চুক্তিবদ্ধ টাকার পরিমাণ (৳)</label><input id="ctr" type="number" min="0" inputmode="numeric" placeholder="যেমন 15000"></div>
+<div><label for="amt">প্রদত্ত টাকার পরিমাণ (৳)</label><input id="amt" type="number" min="0" inputmode="numeric" placeholder="যেমন 12000"></div>
+<div><label for="rem">অবশিষ্ট টাকার পরিমাণ (৳) — স্বয়ংক্রিয়</label><input id="rem" type="text" readonly value="৳ ০"></div>
+<div><label for="mon">কোন মাসের ভাড়া</label><div class="dw"><input id="mon" type="text" placeholder="যেমন জুলাই-২০২৬" autocomplete="off"><button type="button" class="cal" data-for="mon" data-m="1" aria-label="ক্যালেন্ডার">📅</button><input class="pk" id="mon_p" type="month" tabindex="-1" aria-hidden="true"></div></div>
+<div class="full"><label for="note">টাকা প্রদানের মাধ্যম</label><input id="note" type="text" list="nl" placeholder="যেমন: বিকাশ, নগদ, ব্যাংক" autocomplete="off"><datalist id="nl"><option value="নগদ টাকা"><option value="বিকাশ"><option value="নগদ"><option value="ব্যাংক ট্রান্সফার"><option value="চেক"></datalist></div>
+<div><label for="snd">সেন্ডার ব্যাংক/এমএফএস-এর নাম/নম্বর</label><input id="snd" type="text" list="bl" autocomplete="off"></div>
+<div><label for="rcv">রিসিভিং ব্যাংক/এমএফএস-এর নাম/নম্বর</label><input id="rcv" type="text" list="bl" autocomplete="off"><datalist id="bl"><option value="বিকাশ"><option value="নগদ"><option value="রকেট"><option value="উপায়"><option value="ডাচ-বাংলা ব্যাংক"><option value="ব্র্যাক ব্যাংক"><option value="ইসলামী ব্যাংক"><option value="সোনালী ব্যাংক"><option value="ইস্টার্ন ব্যাংক"><option value="সিটি ব্যাংক"></datalist></div>
+<div class="full"><label for="rmk">বিশেষ মন্তব্য</label><input id="rmk" type="text" autocomplete="off"></div>
+</div>
+<div class="row"><button class="btn" id="save">সংরক্ষণ করুন</button><span class="msg" id="msg"></span></div>
+</div>
+<div class="card"><h2>👤 ফ্ল্যাট অনুযায়ী ভাড়াটিয়ার তথ্য <span class="msg" id="tpm"></span></h2><p class="sub" style="margin:-4px 0 10px">এখানে ফ্ল্যাটের নম্বর বদলানো, নতুন ফ্ল্যাট যোগ করা এবং ভাড়াটিয়ার নাম ও মোবাইল নম্বর সেভ করা যায়। সেভ করলে এন্ট্রির সময় ফ্ল্যাট বাছলেই সর্বশেষ সেভ করা নাম ও নম্বর নিজে থেকে চলে আসবে।</p><div class="grid" style="margin-bottom:14px"><div class="full"><label for="nf">নতুন ফ্ল্যাট যোগ করুন</label><div class="dw"><input id="nf" type="text" placeholder="যেমন ৯-ডি" autocomplete="off"><button type="button" class="btn" id="nfb">➕ যোগ করুন</button></div></div></div>
+<div id="tg"></div><div class="row"><button class="btn" id="tsave">ভাড়াটিয়ার তথ্য সংরক্ষণ করুন</button></div></div>
+<div class="card"><h2>সর্বশেষ এন্ট্রি <span class="msg" id="dm"></span></h2><div class="sc" id="recent"></div></div>
+</section>
+
+<section id="p2" hidden>
+<div class="tabs noprint"><button class="tab on" id="m1">📅 তারিখ অনুযায়ী</button><button class="tab" id="m2">🏢 ফ্ল্যাট নম্বর অনুযায়ী</button></div>
+<div class="card"><div id="dp"><h2>তারিখ অনুযায়ী রিপোর্ট</h2>
+<div class="grid">
+<div><label for="from">শুরুর তারিখ</label><div class="dw"><input id="from" type="text" placeholder="দিন/মাস/বছর" autocomplete="off"><button type="button" class="cal" data-for="from" aria-label="ক্যালেন্ডার">📅</button><input class="pk" id="from_p" type="date" tabindex="-1" aria-hidden="true"></div></div>
+<div><label for="to">শেষ তারিখ</label><div class="dw"><input id="to" type="text" placeholder="দিন/মাস/বছর" autocomplete="off"><button type="button" class="cal" data-for="to" aria-label="ক্যালেন্ডার">📅</button><input class="pk" id="to_p" type="date" tabindex="-1" aria-hidden="true"></div></div>
+<div class="full"><label for="rf">ফ্ল্যাট নম্বর</label><select id="rf"></select></div>
+</div>
+<div class="row noprint" style="justify-content:center"><button class="btn alt" id="b1">এই মাস</button><button class="btn alt" id="b2">গত মাস</button><button class="btn alt" id="b3">এই বছর</button></div></div>
+<div id="fp" hidden><h2>ফ্ল্যাট নম্বর অনুযায়ী রিপোর্ট</h2><label for="rf2">ফ্ল্যাট নম্বর</label><select id="rf2"></select><p class="sub" style="margin:10px 0 0">শুরু থেকে আজ পর্যন্ত এই ফ্ল্যাটের সব ট্রানজেকশন দেখাবে।</p></div>
+<div class="row noprint" style="justify-content:center"><button class="btn" id="pr">📄 PDF ডাউনলোড</button><span class="msg" id="pm"></span></div>
+</div>
+<div class="card"><div class="ts" id="ts"></div><div class="rh" id="rh"></div><div class="sum" id="sum"></div><div class="sc" id="rep"></div><div class="cg" id="cg"></div></div>
+</section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+let FLATS=['৬-এ','৬-বি','৮-সি'];
+const $=id=>document.getElementById(id);
+let rows=[],col=null,mode='date';
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=new Date(),td=iso(today);
+const fmt=n=>'৳ '+Number(n).toLocaleString('bn-BD');
+const BN='০১২৩৪৫৬৭৮৯',bn=x=>String(x).replace(/\d/g,d=>BN[d]),en=x=>String(x).replace(/[০-৯]/g,d=>BN.indexOf(d));
+const fd=x=>x?bn(x.slice(8,10)+'/'+x.slice(5,7)+'/'+x.slice(0,4)):'';
+const fm=x=>x?MN[+x.slice(5,7)-1]+'-'+bn(x.slice(0,4)):'—';
+function pd(t){const m=en(t).trim().match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);if(!m)return'';const d=+m[1],mo=+m[2],y=+m[3],o=new Date(y,mo-1,d);if(o.getFullYear()!=y||o.getMonth()!=mo-1||o.getDate()!=d)return'';return iso(o)}
+const MN=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'],nr=x=>x.replace(/ী/g,'ি');
+function pm(t){const x=en(t).trim();let m=x.match(/^(\d{1,2})[\/\-.](\d{4})$/),i,y;
+  if(m){i=+m[1]-1;y=m[2]}else{m=x.match(/^(\D+?)[\s\-\/.]*(\d{4})$/);if(!m)return'';i=MN.map(nr).indexOf(nr(m[1].trim()));y=m[2]}
+  return(i<0||i>11)?'':y+'-'+String(i+1).padStart(2,'0')}
+const gd=id=>pd($(id).value),gm=id=>pm($(id).value),sd=(id,v)=>{$(id).value=fd(v)},sM=(id,v)=>{$(id).value=v?fm(v):''};
+const con=r=>r.contract!=null?Number(r.contract):Number(r.amount);
+const rem=r=>con(r)-Number(r.amount);
+const remTxt=v=>v<0?fmt(-v)+' (অতিরিক্ত)':fmt(v);
+const NOTEHTML='<div class="seal"><b>✔</b>ভেরিফাইড</div><span>এটি একটি কম্পিউটার জেনারেটেড রিপোর্ট, স্বাক্ষরের প্রয়োজন নেই।</span>';
+const pod=h=>h<4?'রাত':h<6?'ভোর':h<12?'সকাল':h<15?'দুপুর':h<18?'বিকেল':h<20?'সন্ধ্যা':'রাত';
+$('cg').innerHTML=NOTEHTML;
+function stamp(){const d=new Date(),h=d.getHours(),m=String(d.getMinutes()).padStart(2,'0');return 'রিপোর্ট তৈরির সময়: '+fd(iso(d))+', '+pod(h)+' '+bn(String(h%12||12).padStart(2,'0')+':'+m)}
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+sd('dt',td);sM('mon',td.slice(0,7));
+sd('from',td.slice(0,8)+'01');sd('to',td);
+function show(n){$('p1').hidden=n!=1;$('p2').hidden=n!=2;$('t1').classList.toggle('on',n==1);$('t2').classList.toggle('on',n==2);render()}
+$('t1').onclick=()=>show(1);$('t2').onclick=()=>show(2);
+function range(a,b){sd('from',iso(a));sd('to',iso(b));render()}
+$('b1').onclick=()=>range(new Date(today.getFullYear(),today.getMonth(),1),today);
+$('b2').onclick=()=>range(new Date(today.getFullYear(),today.getMonth()-1,1),new Date(today.getFullYear(),today.getMonth(),0));
+$('b3').onclick=()=>range(new Date(today.getFullYear(),0,1),today);
+document.querySelectorAll('.cal').forEach(b=>{const id=b.dataset.for,mo=b.dataset.m==='1',pk=$(id+'_p');
+  b.onclick=()=>{const c=mo?gm(id):gd(id);if(c)pk.value=c;try{pk.showPicker()}catch(e){pk.click()}};
+  pk.onchange=()=>{if(!pk.value)return;mo?sM(id,pk.value):sd(id,pk.value);$(id).dispatchEvent(new Event('change'))}});
+['dt','from','to','mon'].forEach(id=>$(id).addEventListener('change',()=>{const v=id==='mon'?gm(id):gd(id),el=$(id);el.style.borderColor=(v||!el.value)?'':'var(--warn)';if(v)id==='mon'?sM(id,v):sd(id,v)}));
+$('pr').onclick=async()=>{
+  const m=$('pm'),b=$('pr');
+  if(!window.html2canvas||!window.jspdf){m.style.color='var(--warn)';m.textContent='PDF লাইব্রেরি লোড হয়নি, ইন্টারনেট দেখে আবার চেষ্টা করুন';return}
+  b.disabled=true;m.style.color='var(--brand)';m.textContent='PDF তৈরি হচ্ছে…';
+  const fl=mode==='flat',f=fl?'':gd('from'),t=fl?'':gd('to'),rf=fl?$('rf2'):$('rf'),dr=fl?'শুরু থেকে আজ ('+fd(td)+') পর্যন্ত':(f?fd(f):'শুরু')+' থেকে '+(t?fd(t):'এখন')+' পর্যন্ত';
+  const box=document.createElement('div');box.className='pdfbox';
+  box.style.cssText='position:fixed;left:-10000px;top:0;width:1250px;padding:24px;background:#fff;color:#000;font-family:inherit;--bg:#fff;--card:#fff;--ink:#000;--mute:#444;--line:#ccc;--brand:#0f6b4f;--brand2:#e8f3ee;--warn:#b3202f;--btn:#fff';
+  box.innerHTML='<h2 style="font-size:24px;margin:0 0 4px;text-align:center">🏢 ফ্ল্যাট ম্যানেজমেন্ট সিস্টেমস</h2><p style="margin:0 0 6px;color:#444;text-align:center;font-size:14px">'+stamp()+'</p><p style="margin:0 0 14px;color:#444;text-align:center">তারিখ: '+dr+' | ফ্ল্যাট নম্বর: '+esc(rf.options[rf.selectedIndex].text)+'</p><div class="sum">'+$('sum').innerHTML+'</div>'+$('rep').innerHTML;
+  document.body.appendChild(box);
+  try{
+    try{await document.fonts.ready}catch(e){}
+    const bt=box.getBoundingClientRect().top,cuts=[...box.querySelectorAll('tr')].map(tr=>Math.round((tr.getBoundingClientRect().bottom-bt)*2));
+    const cv=await html2canvas(box,{scale:2,backgroundColor:'#fff'});
+    const doc=new window.jspdf.jsPDF({orientation:'l',unit:'pt',format:'a4'});
+    const fb=document.createElement('div');fb.className='cg pdffoot';fb.style.cssText='position:fixed;left:-10000px;top:0;width:1250px;margin:0;padding:8px 24px;background:#fff;color:#444;font-family:inherit;font-size:15px;--brand:#0f6b4f;--card:#fff;--mute:#444';fb.innerHTML=NOTEHTML;document.body.appendChild(fb);
+    const fcv=await html2canvas(fb,{scale:2,backgroundColor:'#fff'});fb.remove();
+    const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight(),mg=20,iw=W-mg*2,k=iw/cv.width,fh=fcv.height*k,ph=Math.floor((H-mg*2-fh-8)/k);
+    let y=0,pg=0;
+    while(y<cv.height){
+      let h=Math.min(ph,cv.height-y);
+      if(y+h<cv.height){const cc=cuts.filter(v=>v>y+10&&v<=y+h);if(cc.length)h=cc[cc.length-1]-y}
+      const c=document.createElement('canvas');c.width=cv.width;c.height=h;
+      const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,h);x.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
+      if(pg)doc.addPage();doc.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',mg,mg,iw,h*k);doc.addImage(fcv.toDataURL('image/png'),'PNG',mg,H-mg-fh,iw,fh);
+      y+=h;pg++;
+    }
+    const name=fl?'rent-report-flat'+(+rf.value+1)+'-until-'+td+'.pdf':'rent-report-'+(f||'start')+'_to_'+(t||td)+'.pdf',blob=doc.output('blob');
+    let dl=null;try{dl=window.claude?await window.claude.use('downloads'):null}catch(e){}
+    if(dl)await dl.save({filename:name,data:blob});else doc.save(name);
+    m.textContent='✔ PDF প্রস্তুত';setTimeout(()=>m.textContent='',3000);
+  }catch(e){m.style.color='var(--warn)';m.textContent=(e&&e.code==='declined')?'ডাউনলোড বাতিল করা হয়েছে':'PDF তৈরি করা যায়নি'}
+  box.remove();b.disabled=false;
+};
+['from','to','rf','rf2'].forEach(i=>$(i).onchange=render);
+function setMode(m){mode=m;$('dp').hidden=m!=='date';$('fp').hidden=m!=='flat';$('m1').classList.toggle('on',m==='date');$('m2').classList.toggle('on',m==='flat');render()}
+$('m1').onclick=()=>setMode('date');$('m2').onclick=()=>setMode('flat');
+function local(){try{return JSON.parse(localStorage.getItem('rents')||'[]')}catch(e){return[]}}
+function saveLocal(){try{localStorage.setItem('rents',JSON.stringify(rows))}catch(e){}}
+async function init(){
+  let db=null;
+  try{db=window.claude?await window.claude.use('db'):null}catch(e){}
+  if(db){col2=db.collection('tenants');col2.onSnapshot(s=>{prof={};s.docs.forEach(d=>{prof[d.id]=d.data()});fillProf();render()},()=>{});col3=db.collection('config');col3.onSnapshot(s=>{const d=s.docs.find(x=>x.id==='flats'),n=d&&d.data().names;if(Array.isArray(n)&&n.length&&n.join('|')!==FLATS.join('|')){FLATS=n;buildFlats();render()}},()=>{});col=db.collection('rents');col.onSnapshot(s=>{rows=s.docs.map(d=>Object.assign({id:d.id},d.data()));render()},()=>{});}
+  else{rows=local();try{const x=JSON.parse(localStorage.getItem('flats')||'null');if(Array.isArray(x)&&x.length){FLATS=x;buildFlats()}}catch(e){}try{prof=JSON.parse(localStorage.getItem('tenants')||'{}')}catch(e){}fillProf();$('warn').innerHTML='<div class="warn">⚠️ ডেটা শুধু এই ব্রাউজারে জমা থাকবে। ক্লিয়ার করলে মুছে যেতে পারে।</div>';render()}
+}
+$('save').onclick=async()=>{
+  const amt=Number($('amt').value||0),ctr=Number($('ctr').value||0),dt=gd('dt');
+  if(!ctr||ctr<=0||amt<0||!dt||!$('ten').value.trim()){$('msg').style.color='var(--warn)';$('msg').textContent='ভাড়াটিয়ার নাম, চুক্তিবদ্ধ টাকার পরিমাণ ও তারিখ দিন';return}
+  const mob=normMob($('mob').value);
+  if(!okMob(mob)){$('msg').style.color='var(--warn)';$('msg').textContent='মোবাইল নম্বর সঠিক নয় (১১ ডিজিট, যেমন ০১৭XXXXXXXX)';return}
+  const e={flat:Number($('flat').value),contract:ctr,amount:amt,date:dt,month:gm('mon'),tenant:$('ten').value.trim(),mobile:mob,note:$('note').value.trim(),sender:$('snd').value.trim(),receiver:$('rcv').value.trim(),remark:$('rmk').value.trim()};
+  const id='r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  try{
+    if(col)await col.doc(id).set(e);else{rows.push(Object.assign({id},e));saveLocal()}
+    const p0=pf(e.flat);if(p0.name!==e.tenant||(p0.mobile||'')!==mob){await putProf(e.flat,e.tenant,mob);fillProf()}
+    $('amt').value='';$('note').value='';$('snd').value='';$('rcv').value='';$('rmk').value='';calc();$('msg').style.color='var(--brand)';$('msg').textContent='✔ সংরক্ষিত হয়েছে';
+    setTimeout(()=>$('msg').textContent='',2500);render();
+  }catch(err){$('msg').style.color='var(--warn)';$('msg').textContent='সংরক্ষণ করা যায়নি'}
+};
+async function lock(id){
+  const m=$('dm');
+  try{if(col)await col.doc(id).update({locked:true});const x=rows.find(r=>r.id===id);if(x)x.locked=true;if(!col)saveLocal();m.style.color='var(--brand)';m.textContent='✔ কনফার্ম হয়েছে, আর মোছা যাবে না';setTimeout(()=>m.textContent='',3000)}
+  catch(e){m.style.color='var(--warn)';m.textContent='কনফার্ম করা যায়নি'}
+  render();
+}
+async function del(id){
+  const m=$('dm'),x=rows.find(r=>r.id===id);
+  if(x&&x.locked){m.style.color='var(--warn)';m.textContent='কনফার্ম করা এন্ট্রি মোছা যাবে না';render();return}
+  try{if(col)await col.doc(id).delete();rows=rows.filter(r=>r.id!==id);if(!col)saveLocal();m.style.color='var(--brand)';m.textContent='✔ মুছে ফেলা হয়েছে';setTimeout(()=>m.textContent='',2500)}
+  catch(e){m.style.color='var(--warn)';m.textContent='মুছে ফেলা যায়নি'+(e&&e.code==='not_granted'?' (অনুমতি নেই)':'')}
+  render();
+}
+function table(list,withDel){
+  if(!list.length)return'<div class="empty">কোনো এন্ট্রি নেই।</div>';
+  const sr=!withDel,sub=(l,v)=>v?'<small>'+l+esc(v)+'</small>':'';
+  let c=0,p=0;
+  const body=list.map((r,i)=>{c+=con(r);p+=Number(r.amount);const d=rem(r);
+    return'<tr>'+(sr?'<td>'+bn(i+1)+'</td>':'')+'<td>'+fd(r.date)+'</td><td><b>'+esc(FLATS[r.flat])+'</b></td><td>'+esc(r.tenant)+(r.mobile?'<small>📱 '+bn(r.mobile)+'</small>':'')+'</td><td>'+fm(r.month)+'</td><td class="r">'+fmt(con(r))+'</td><td class="r">'+fmt(r.amount)+'</td><td class="r" style="color:'+(d>0?'var(--warn)':'inherit')+'">'+remTxt(d)+'</td><td>'+esc(r.note)+'</td><td>'+esc(r.sender)+'</td><td>'+esc(r.receiver)+'</td><td>'+(d>0?'<b style="color:var(--warn)">এখনো বাকি আছে</b>':'<b style="color:var(--brand)">পেইড</b>')+(r.remark?'<small>'+esc(r.remark)+'</small>':'')+'</td>'+(withDel?'<td style="white-space:nowrap">'+(r.locked?'<span style="color:var(--brand);font-weight:600">✔ কনফার্মড</span>':'<button class="del" data-act="del" data-id="'+r.id+'">মুছুন</button> <button class="cf" data-act="cf" data-id="'+r.id+'">কনফার্ম</button>')+'</td>':'')+'</tr>'}).join('');
+  const foot=sr?'<tfoot><tr><td colspan="5">সর্বমোট ('+bn(list.length)+'টি এন্ট্রি)</td><td class="r">'+fmt(c)+'</td><td class="r">'+fmt(p)+'</td><td class="r">'+remTxt(c-p)+'</td><td colspan="4"></td></tr></tfoot>':'';
+  return'<table><thead><tr>'+(sr?'<th>ক্রম</th>':'')+'<th>টাকা প্রদানের তারিখ</th><th>ফ্ল্যাট নম্বর</th><th>ভাড়াটিয়ার নাম</th><th>কোন মাসের ভাড়া</th><th class="r">চুক্তিবদ্ধ টাকার পরিমাণ</th><th class="r">প্রদত্ত টাকার পরিমাণ</th><th class="r">অবশিষ্ট টাকার পরিমাণ</th><th>টাকা প্রদানের মাধ্যম</th><th>সেন্ডার ব্যাংক/এমএফএস-এর নাম/নম্বর</th><th>রিসিভিং ব্যাংক/এমএফএস-এর নাম/নম্বর</th><th>বিশেষ মন্তব্য</th>'+(withDel?'<th></th>':'')+'</tr></thead><tbody>'+body+'</tbody>'+foot+'</table>';
+}
+function calc(){const v=Number($('ctr').value||0)-Number($('amt').value||0);$('rem').value=remTxt(v);$('rem').style.color=v>0?'var(--warn)':'inherit'}
+$('ctr').oninput=calc;$('amt').oninput=calc;
+let prof={},col2=null,col3=null;
+const normMob=x=>en(x).replace(/[\s\-]/g,'').replace(/^\+?88(?=01)/,''),okMob=m=>m===''||/^01[3-9]\d{8}$/.test(m),pf=f=>prof['f'+f]||{};
+function fillProf(){FLATS.forEach((_,i)=>{const p=pf(i),a=$('tn'+i),b=$('tm'+i);if(document.activeElement!==a)a.value=p.name||'';if(document.activeElement!==b)b.value=p.mobile?bn(p.mobile):''})}
+async function putProf(i,name,mobile){const v={name,mobile};prof['f'+i]=v;if(col2)await col2.doc('f'+i).set(v);else try{localStorage.setItem('tenants',JSON.stringify(prof))}catch(e){}}
+const err=t=>{const m=$('tpm');m.style.color='var(--warn)';m.textContent=t},ok=t=>{const m=$('tpm');m.style.color='var(--brand)';m.textContent=t;setTimeout(()=>m.textContent='',2500)};
+function sel(id,v,d){$(id).value=[...$(id).options].some(o=>o.value===String(v))?v:d}
+function buildFlats(){
+  const k={f:$('flat').value,r:$('rf').value||'all',r2:$('rf2').value};
+  ['flat','rf','rf2'].forEach(id=>{$(id).innerHTML='';FLATS.forEach((n,i)=>$(id).add(new Option(n,i)))});
+  $('rf').add(new Option('সব ফ্ল্যাট','all'),0);
+  sel('flat',k.f,'0');sel('rf',k.r,'all');sel('rf2',k.r2,'0');
+  $('tg').innerHTML=FLATS.map((n,i)=>'<div class="grid" style="margin-bottom:10px"><div class="full"><label for="fn'+i+'">ফ্ল্যাট নম্বর</label><input id="fn'+i+'" type="text" value="'+esc(n)+'" autocomplete="off"></div><div><label for="tn'+i+'">ভাড়াটিয়ার নাম</label><input id="tn'+i+'" type="text" autocomplete="off"></div><div><label for="tm'+i+'">মোবাইল নম্বর</label><input id="tm'+i+'" type="tel" autocomplete="off"></div></div>').join('');
+  fillProf();
+}
+async function putFlats(){if(col3)await col3.doc('flats').set({names:FLATS});else try{localStorage.setItem('flats',JSON.stringify(FLATS))}catch(e){}}
+buildFlats();
+$('nfb').onclick=async()=>{const v=$('nf').value.trim();
+  if(!v){err('নতুন ফ্ল্যাটের নম্বর লিখুন');return}
+  if(FLATS.includes(v)){err('এই ফ্ল্যাট আগেই আছে');return}
+  try{FLATS=[...FLATS,v];await putFlats();$('nf').value='';buildFlats();render();ok('✔ ফ্ল্যাট যোগ হয়েছে')}catch(e){FLATS=FLATS.slice(0,-1);err('ফ্ল্যাট যোগ করা যায়নি')}
+};
+$('tsave').onclick=async()=>{
+  try{
+    const names=FLATS.map((_,i)=>$('fn'+i).value.trim());
+    if(names.some(n=>!n)||new Set(names).size!==names.length){err('ফ্ল্যাট নম্বর ফাঁকা বা একই নাম দেওয়া যাবে না');return}
+    for(let i=0;i<names.length;i++)if(!okMob(normMob($('tm'+i).value))){err('ফ্ল্যাট '+names[i]+'-এর মোবাইল নম্বর সঠিক নয়');return}
+    if(names.join('|')!==FLATS.join('|')){FLATS=names;await putFlats()}
+    for(let i=0;i<names.length;i++)await putProf(i,$('tn'+i).value.trim(),normMob($('tm'+i).value));
+    buildFlats();lastTenant();render();ok('✔ সংরক্ষিত হয়েছে');
+  }catch(e){err('সংরক্ষণ করা যায়নি')}};
+$('mob').addEventListener('change',()=>{const v=normMob($('mob').value);$('mob').style.borderColor=okMob(v)?'':'var(--warn)';if(okMob(v))$('mob').value=bn(v)});
+function lastTenant(){
+  const f=Number($('flat').value),p=pf(f),l=rows.filter(r=>r.flat==f&&r.tenant).sort((a,b)=>b.date.localeCompare(a.date))[0];
+  $('ten').value=p.name||(l?l.tenant:'');
+  $('mob').value=bn(p.mobile||(l&&l.mobile)||'');$('mob').style.borderColor='';
+  const c=rows.filter(r=>r.flat==f).sort((a,b)=>b.date.localeCompare(a.date))[0];$('ctr').value=c?con(c):'';calc();
+  $('tl').innerHTML=[...new Set(rows.map(r=>r.tenant).filter(Boolean))].map(n=>'<option value="'+esc(n)+'">').join('');
+}
+$('flat').onchange=lastTenant;
+let tInit=false;
+function render(){
+  if(!tInit&&(rows.length||Object.keys(prof).length)){tInit=true;lastTenant()}
+  const sorted=rows.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  if(!$('p1').hidden){$('recent').innerHTML=table(sorted.slice(0,10),true)}
+  if(!$('p2').hidden){
+    const fl=mode==='flat',f=fl?'':gd('from'),t=fl?'':gd('to'),rf=fl?$('rf2').value:$('rf').value;
+    const list=sorted.filter(r=>(!f||r.date>=f)&&(!t||r.date<=t)&&(rf==='all'||r.flat==rf));
+    if(fl)list.reverse();
+    const sm=l=>({c:l.reduce((s,r)=>s+con(r),0),p:l.reduce((s,r)=>s+Number(r.amount),0)});
+    const card=(n,l,cls)=>{const x=sm(l),d=x.c-x.p;return'<div class="s '+cls+'"><small>'+n+'</small><b>'+fmt(x.p)+'</b><small>প্রদত্ত টাকার পরিমাণ</small><small>চুক্তিবদ্ধ টাকার পরিমাণ: '+fmt(x.c)+'</small><small>অবশিষ্ট টাকার পরিমাণ: '+remTxt(d)+'</small></div>'};
+    $('sum').innerHTML=FLATS.map((n,i)=>(rf==='all'||rf==i)?card('ফ্ল্যাট '+n,list.filter(r=>r.flat==i),''):'').join('')+(fl?'':card('সর্বমোট ('+list.length.toLocaleString('bn-BD')+'টি এন্ট্রি)',list,'t'));
+    $('ts').textContent=stamp();
+    $('rh').innerHTML='📊 রিপোর্ট — ফ্ল্যাট নম্বর: <b>'+(rf==='all'?'সব ফ্ল্যাট':esc(FLATS[rf]))+'</b> | সময়: <b>'+(fl?'শুরু থেকে আজ ('+fd(td)+') পর্যন্ত':(f?fd(f):'শুরু')+' থেকে '+(t?fd(t):'এখন')+' পর্যন্ত')+'</b>';
+    $('rep').innerHTML=table(list,false);
+  }
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,id=b.dataset.id,c=b.parentElement,no=' <button class="no" data-act="no">না</button>';
+  if(a==='del')c.innerHTML='মুছবেন? <button class="del" data-act="delyes" data-id="'+id+'">হ্যাঁ, মুছুন</button>'+no;
+  else if(a==='cf')c.innerHTML='কনফার্ম করলে আর মোছা যাবে না! <button class="cf" data-act="cfyes" data-id="'+id+'">হ্যাঁ, কনফার্ম</button>'+no;
+  else if(a==='delyes')del(id);else if(a==='cfyes')lock(id);else render();
+});
+render();init();
+</script>
+</body>
+</html>
